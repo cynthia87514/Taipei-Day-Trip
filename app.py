@@ -1,7 +1,5 @@
 from fastapi import *
 from fastapi.responses import FileResponse
-from fastapi_pagination import paginate
-from pydantic import BaseModel
 import mysql.connector
 from mysql.connector import pooling
 
