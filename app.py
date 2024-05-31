@@ -2,6 +2,7 @@ from fastapi import *
 from fastapi.responses import FileResponse
 import mysql.connector
 from mysql.connector import pooling
+import ast
 
 app = FastAPI()
 cnxpool = mysql.connector.pooling.MySQLConnectionPool(
@@ -67,7 +68,7 @@ async def attractionslist(request: Request, response: Response, page: int = Quer
 				# "mrt_id": attraction_data[6],
 				"lat": attraction_data[7],
 				"lng": attraction_data[8],
-				"images": eval(attraction_data[9])
+				"images": ast.literal_eval(attraction_data[9])
 				}
 				datalst.append(data)
 			
@@ -108,7 +109,7 @@ async def attractionslist(request: Request, response: Response, page: int = Quer
 				# "mrt_id": attraction_data[6],
 				"lat": attraction_data[7],
 				"lng": attraction_data[8],
-				"images": eval(attraction_data[9])
+				"images": ast.literal_eval(attraction_data[9])
 				}
 				datalst.append(data)
 
@@ -162,7 +163,7 @@ async def attractiondata(request: Request, response: Response, attractionId: int
 				"mrt": mrt_data[0],
 				"lat": attraction_data[5],
 				"lng": attraction_data[6],
-				"images": eval(attraction_data[7])
+				"images": ast.literal_eval(attraction_data[7])
 			}
 			return {"data": data}
 		else:
