@@ -27,7 +27,7 @@ document.addEventListener("DOMContentLoaded", function(){
 
 
     // 捷運站列表
-    fetch("/api/mrts").then(function(response){
+    fetch("./api/mrts").then(function(response){
         return response.json();
     }).then(function(data){
         const mrts = data.data;
@@ -67,7 +67,7 @@ document.addEventListener("DOMContentLoaded", function(){
 
     let keyword = null;
     // 景點圖片、名稱、種類、對應的捷運站
-    fetch("/api/attractions?page=0").then(function(response){
+    fetch("./api/attractions?page=0").then(function(response){
         return response.json();
     }).then(function(data){
         let attractions = data.data;
@@ -140,7 +140,7 @@ document.addEventListener("DOMContentLoaded", function(){
                 if (entry.isIntersecting && nextPage !== null){
                     // observer.unobserve(entry.target); // 當該元素已被觀察過，即取消關注，避免重複執行
                     if (keyword === null){
-                        const baseURL = "/api/attractions";
+                        const baseURL = "./api/attractions";
                         modifiedURL = `${baseURL}?page=${nextPage}`;
                         // 如果偵測到 scroll 到頁面最下方，再 fetch 新的資料進來
                         fetch(modifiedURL).then(function(response){
@@ -151,7 +151,7 @@ document.addEventListener("DOMContentLoaded", function(){
                             loadData();
                     })
                     }else{
-                        const baseURL = "/api/attractions";
+                        const baseURL = "./api/attractions";
                         modifiedURL = `${baseURL}?page=${nextPage}&keyword=${keyword}`;
                         // 如果偵測到 scroll 到頁面最下方，再 fetch 新的資料進來
                         fetch(modifiedURL).then(function(response){
@@ -184,7 +184,7 @@ document.addEventListener("DOMContentLoaded", function(){
                     attractionsGroup.removeChild(attractionsGroup.firstChild);
                 }
 
-                const URL = "/api/attractions?page=0&keyword=" + encodeURIComponent(keyword);
+                const URL = "./api/attractions?page=0&keyword=" + encodeURIComponent(keyword);
 
                 fetch(URL).then(function(response){
                     return response.json(); 
