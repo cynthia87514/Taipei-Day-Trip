@@ -1,8 +1,10 @@
 from fastapi import *
 from fastapi.responses import FileResponse
+from fastapi.staticfiles import StaticFiles
 import mysql.connector
 from mysql.connector import pooling
-import json
+# import json # check 為何又不行了
+import ast # 先用 ast.literal_eval() 代替
 
 app = FastAPI()
 cnxpool = mysql.connector.pooling.MySQLConnectionPool(
@@ -15,6 +17,15 @@ cnxpool = mysql.connector.pooling.MySQLConnectionPool(
     password="19980514",
     database="taipei-day-trip"
 )
+
+####記得刪掉####
+from fastapi.middleware.cors import CORSMiddleware
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+)
+
+app.mount("/static", StaticFiles(directory="static"), name="static")
 
 def get_db_connection():
 	con = cnxpool.get_connection()
@@ -68,7 +79,7 @@ async def attractionslist(request: Request, response: Response, page: int = Quer
 				# "mrt_id": attraction_data["mrt_id"],
 				"lat": attraction_data["latitude"],
 				"lng": attraction_data["longitude"],
-				"images": json.loads(attraction_data["images"])
+				"images":ast.literal_eval(attraction_data["images"])
 				}
 				datalst.append(data)
 			cursor.execute("SELECT COUNT(*) FROM `attractions`")
@@ -108,7 +119,7 @@ async def attractionslist(request: Request, response: Response, page: int = Quer
 				# "mrt_id": attraction_data["mrt_id"],
 				"lat": attraction_data["latitude"],
 				"lng": attraction_data["longitude"],
-				"images": json.loads(attraction_data["images"])
+				"images":ast.literal_eval(attraction_data["images"])
 				}
 				datalst.append(data)
 
@@ -162,7 +173,7 @@ async def attractiondata(request: Request, response: Response, attractionId: int
 				"mrt": mrt_data["name"],
 				"lat": attraction_data["latitude"],
 				"lng": attraction_data["longitude"],
-				"images": json.loads(attraction_data["images"])
+				"images":ast.literal_eval(attraction_data["images"])
 			}
 			return {"data": data}
 		else:
@@ -197,7 +208,6 @@ async def mrtslist(request: Request, response: Response):
 			ORDER BY mrt_num DESC
 			""")
 		mrts_data = cursor.fetchall()
-		print(mrts_data)
 		data = []
 		for mrt_data in mrts_data:
 			data.append(mrt_data["name"])
