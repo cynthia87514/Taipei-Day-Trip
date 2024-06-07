@@ -3,8 +3,7 @@ from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 import mysql.connector
 from mysql.connector import pooling
-# import json # check 為何又不行了
-import ast # 先用 ast.literal_eval() 代替
+import ast
 
 app = FastAPI()
 cnxpool = mysql.connector.pooling.MySQLConnectionPool(
@@ -16,13 +15,6 @@ cnxpool = mysql.connector.pooling.MySQLConnectionPool(
     user="root",
     password="19980514",
     database="taipei-day-trip"
-)
-
-####記得刪掉####
-from fastapi.middleware.cors import CORSMiddleware
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
 )
 
 app.mount("/static", StaticFiles(directory="static"), name="static")
