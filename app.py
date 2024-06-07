@@ -17,7 +17,7 @@ cnxpool = mysql.connector.pooling.MySQLConnectionPool(
     database="taipei-day-trip"
 )
 
-app.mount("/static", StaticFiles(directory="static"), name="static")
+app.mount("/static", StaticFiles(directory="static", html=True), name="static")
 
 def get_db_connection():
 	con = cnxpool.get_connection()
