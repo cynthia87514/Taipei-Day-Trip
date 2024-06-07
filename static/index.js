@@ -31,10 +31,7 @@ document.addEventListener("DOMContentLoaded", function(){
         return response.json();
     }).then(function(data){
         const mrts = data.data;
-        // 裝捷運站的盒子
         const listItemContainer = document.querySelector(".listItemContainer");
-        // console.log(mrts);
-        // console.log(mrts.length);
         for (let i = 0 ; i < mrts.length ; i++){
             const listItem = document.createElement("div");
             listItem.setAttribute("class", "listItem");
@@ -46,7 +43,7 @@ document.addEventListener("DOMContentLoaded", function(){
             listItemText.style.width = mrts[i].length * 16 + "px";
             listItem.appendChild(listItemText);
 
-            // 點擊捷運站名，會將該站名顏色變黑、並送入搜尋框
+            // 點擊捷運站名，送入搜尋框
             listItemText.addEventListener("click", function(){
                 listItemText.style.color = "#000000";
                 const input = document.querySelector("input");
@@ -127,22 +124,16 @@ document.addEventListener("DOMContentLoaded", function(){
         // 使用 IntersectionObserver 物件，實現 Infinite Scroll
         const options = {
             root: null,
-            rootMargin: "0px", // 預先載入多少 px
-            threshold: 0.05 // 目標元素的多少 % 進入畫面中才會被觀察
+            rootMargin: "0px",
+            threshold: 0.05
         };
 
-        const callback = (entries, observer) => { // entries 陣列包含多筆被觀察的元素
-            entries.forEach(entry => { //對每一筆 entry 做事
-                // console.log(entry); // entry 為 entries 陣列中的其中一筆資料，內含觀察的多個項目
-                // console.log(observer);
-                // console.log(entry.isIntersecting); // 該元素是否有被觀察到 (是否有出現在畫面中)，為一布林值
-                // console.log(entry.target); // 被觀察的元素本身，可用來對元素編輯，如：加上 class
+        const callback = (entries, observer) => {
+            entries.forEach(entry => {
                 if (entry.isIntersecting && nextPage !== null){
-                    // observer.unobserve(entry.target); // 當該元素已被觀察過，即取消關注，避免重複執行
                     if (keyword === null){
                         const baseURL = "./api/attractions";
                         modifiedURL = `${baseURL}?page=${nextPage}`;
-                        // 如果偵測到 scroll 到頁面最下方，再 fetch 新的資料進來
                         fetch(modifiedURL).then(function(response){
                             return response.json();
                         }).then(function(data){
@@ -153,7 +144,6 @@ document.addEventListener("DOMContentLoaded", function(){
                     }else{
                         const baseURL = "./api/attractions";
                         modifiedURL = `${baseURL}?page=${nextPage}&keyword=${keyword}`;
-                        // 如果偵測到 scroll 到頁面最下方，再 fetch 新的資料進來
                         fetch(modifiedURL).then(function(response){
                             return response.json();
                         }).then(function(data){
