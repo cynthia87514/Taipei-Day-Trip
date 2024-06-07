@@ -8,6 +8,9 @@
 	font:inherit;
 	vertical-align:baseline;
 }
+body{
+    overflow:hidden;
+}
 .navigation{
     position:sticky;
     top:0px;
@@ -19,7 +22,6 @@
     width:100%;
     height:54px;
     background-color:#FFFFFF;
-    /* border:3px solid blue; */
 }
 .navigationDiv{
     flex:none;
@@ -85,7 +87,6 @@
     margin:0 auto;
     width:100%;
     height:320px;
-    /* border:3px solid red; */
 }
 .welcome{
     width:100%;
@@ -96,8 +97,10 @@
 .slogan{
     position:absolute;
     flex:none;
-    left:18.75%;
-    right:18.75%;
+    display:flex;
+    justify-content:left;
+    align-items:center;
+    width:1200px;
     top:75.5px;
     bottom:75.5px;
     height:149px;
@@ -105,6 +108,7 @@
     gap:10px;
 }
 .sloganDiv{
+    flex:none;
     height:149px;
 }
 .sloganText{
@@ -190,7 +194,6 @@ main{
     width:100%;
     /* height:886px; */
     padding:40px 0px 40px 0px;
-    /* border:3px solid black; */
 }
 .listBar{
     display:flex;
@@ -373,7 +376,6 @@ footer{
     height:104px;
     /* padding:40px 843px 40px 843px; */
     background-color:#757575;
-    /* border:3px black solid; */
 }
 .footerDiv{
     flex:none;
@@ -400,7 +402,7 @@ footer{
         width:600px;
     }
     .slogan{
-        left:20%;
+        width:600px;
     }
     .search{
         width:285px;
@@ -446,8 +448,7 @@ footer{
         width:360px;
     }
     .slogan{
-        left:3.125%;
-        width:320px;
+        width:360px;
     }
     .listBar{
         width:360px;
