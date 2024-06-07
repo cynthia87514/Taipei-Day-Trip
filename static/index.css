@@ -9,7 +9,7 @@
 	vertical-align:baseline;
 }
 body{
-    overflow:hidden;
+    overflow-x:hidden;
 }
 .navigation{
     position:sticky;
