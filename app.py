@@ -1,7 +1,9 @@
 from fastapi import *
 from fastapi.responses import FileResponse
+from fastapi.staticfiles import StaticFiles
 import mysql.connector
 from mysql.connector import pooling
+import ast
 
 app = FastAPI()
 cnxpool = mysql.connector.pooling.MySQLConnectionPool(
@@ -15,11 +17,13 @@ cnxpool = mysql.connector.pooling.MySQLConnectionPool(
     database="taipei-day-trip"
 )
 
+app.mount("/static", StaticFiles(directory="static", html=True), name="static")
+
 def get_db_connection():
 	con = cnxpool.get_connection()
 	if con.is_connected():
 		print("Successfully connected to MySQL database.")
-		cursor = con.cursor()
+		cursor = con.cursor(dictionary = True)
 		return con, cursor
 	else:
 		print("Failed to connect to MySQL database.")
@@ -46,7 +50,7 @@ async def attractionslist(request: Request, response: Response, page: int = Quer
 		limit = 12
 		if keyword == None:
 			cursor.execute("""
-				SELECT `attractions`.*, `categorys`.name, `mrts`.name
+				SELECT `attractions`.*, `categorys`.name AS category, `mrts`.name AS mrt
 				FROM `attractions`
 				LEFT JOIN `categorys` ON `attractions`.category_id = `categorys`.id
 				LEFT JOIN `mrts` ON `attractions`.mrt_id = `mrts`.id
@@ -56,23 +60,22 @@ async def attractionslist(request: Request, response: Response, page: int = Quer
 			datalst = []
 			for attraction_data in attractions_data:
 				data = {
-				"id": attraction_data[0],
-				"name": attraction_data[1],
-				"category": attraction_data[11],
-				# "category_id": attraction_data[2],
-				"description": attraction_data[3],
-				"address": attraction_data[4],
-				"transport": attraction_data[5],
-				"mrt": attraction_data[12],
-				# "mrt_id": attraction_data[6],
-				"lat": attraction_data[7],
-				"lng": attraction_data[8],
-				"images": eval(attraction_data[9])
+				"id": attraction_data["id"],
+				"name": attraction_data["name"],
+				"category": attraction_data["category"],
+				# "category_id": attraction_data["category_id"],
+				"description": attraction_data["description"],
+				"address": attraction_data["address"],
+				"transport": attraction_data["transport"],
+				"mrt": attraction_data["mrt"],
+				# "mrt_id": attraction_data["mrt_id"],
+				"lat": attraction_data["latitude"],
+				"lng": attraction_data["longitude"],
+				"images":ast.literal_eval(attraction_data["images"])
 				}
 				datalst.append(data)
-			
 			cursor.execute("SELECT COUNT(*) FROM `attractions`")
-			total = cursor.fetchone()[0]
+			total = cursor.fetchone()["COUNT(*)"]
 			totalpage = total // limit + 1
 			if page < totalpage - 1:
 				nextpage = page + 1
@@ -86,7 +89,7 @@ async def attractionslist(request: Request, response: Response, page: int = Quer
 
 		if keyword != None:
 			cursor.execute("""
-				SELECT `attractions`.*, `categorys`.name, `mrts`.name
+				SELECT `attractions`.*, `categorys`.name AS category, `mrts`.name AS mrt
 				FROM `attractions`
 				LEFT JOIN `categorys` ON `attractions`.category_id = `categorys`.id
 				LEFT JOIN `mrts` ON `attractions`.mrt_id = `mrts`.id
@@ -97,18 +100,18 @@ async def attractionslist(request: Request, response: Response, page: int = Quer
 			datalst = []
 			for attraction_data in attractions_data:
 				data = {
-				"id": attraction_data[0],
-				"name": attraction_data[1],
-				"category": attraction_data[11],
-				# "category_id": attraction_data[2],
-				"description": attraction_data[3],
-				"address": attraction_data[4],
-				"transport": attraction_data[5],
-				"mrt": attraction_data[12],
-				# "mrt_id": attraction_data[6],
-				"lat": attraction_data[7],
-				"lng": attraction_data[8],
-				"images": eval(attraction_data[9])
+				"id": attraction_data["id"],
+				"name": attraction_data["name"],
+				"category": attraction_data["category"],
+				# "category_id": attraction_data["category_id"],
+				"description": attraction_data["description"],
+				"address": attraction_data["address"],
+				"transport": attraction_data["transport"],
+				"mrt": attraction_data["mrt"],
+				# "mrt_id": attraction_data["mrt_id"],
+				"lat": attraction_data["latitude"],
+				"lng": attraction_data["longitude"],
+				"images":ast.literal_eval(attraction_data["images"])
 				}
 				datalst.append(data)
 
@@ -118,7 +121,7 @@ async def attractionslist(request: Request, response: Response, page: int = Quer
 				LEFT JOIN `mrts` ON `attractions`.mrt_id = `mrts`.id
 				WHERE `mrts`.name = %s OR `attractions`.name LIKE %s
 				""", (keyword, '%' + keyword + '%'))
-			total = cursor.fetchone()[0]
+			total = cursor.fetchone()["COUNT(*)"]
 			totalpage = total // limit + 1
 			if page < totalpage - 1:
 				nextpage = page + 1
@@ -153,16 +156,16 @@ async def attractiondata(request: Request, response: Response, attractionId: int
 		mrt_data = cursor.fetchone()
 		if attraction_data and category_data and mrt_data:
 			data = {
-				"id": attraction_data[0],
-				"name": attraction_data[1],
-				"category": category_data[0],
-				"description": attraction_data[2],
-				"address": attraction_data[3],
-				"transport": attraction_data[4],
-				"mrt": mrt_data[0],
-				"lat": attraction_data[5],
-				"lng": attraction_data[6],
-				"images": eval(attraction_data[7])
+				"id": attraction_data["id"],
+				"name": attraction_data["name"],
+				"category": category_data["name"],
+				"description": attraction_data["description"],
+				"address": attraction_data["address"],
+				"transport": attraction_data["transport"],
+				"mrt": mrt_data["name"],
+				"lat": attraction_data["latitude"],
+				"lng": attraction_data["longitude"],
+				"images":ast.literal_eval(attraction_data["images"])
 			}
 			return {"data": data}
 		else:
@@ -189,17 +192,17 @@ async def mrtslist(request: Request, response: Response):
 	con, cursor = get_db_connection()
 	try:
 		cursor.execute("""
-			SELECT `mrts`.name AS mrt_name,
+			SELECT `mrts`.name,
 			COUNT(*) AS mrt_num
 			FROM attractions
 			JOIN `mrts` ON `attractions`.mrt_id = `mrts`.id
 			GROUP BY `attractions`.mrt_id, `mrts`.name
 			ORDER BY mrt_num DESC
 			""")
-		mrt_data = cursor.fetchall()
+		mrts_data = cursor.fetchall()
 		data = []
-		for i in mrt_data:
-			data.append(i[0])
+		for mrt_data in mrts_data:
+			data.append(mrt_data["name"])
 		return {"data": data}
 	except:
 		response.status_code = 500
