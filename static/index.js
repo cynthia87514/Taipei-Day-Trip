@@ -1,4 +1,10 @@
 document.addEventListener("DOMContentLoaded", function(){
+    // 點擊 台北一日遊 會回到首頁
+    const navigationText = document.querySelector(".navigationText");
+    navigationText.addEventListener("click", function(){
+        window.location.href = "/";
+    })
+
     // 點擊左右箭頭按鈕的 function
     const arrowLeft = document.querySelector(".arrowLeft");
     const arrowRight = document.querySelector(".arrowRight");
@@ -6,11 +12,9 @@ document.addEventListener("DOMContentLoaded", function(){
 
     arrowLeft.addEventListener("click", function(){
         listItemContainer.scrollBy({left: -500, behavior: "smooth"});
-        console.log("左邊左邊");
     })
     arrowRight.addEventListener("click", function(){
         listItemContainer.scrollBy({left: 500, behavior: "smooth"});
-        console.log("右邊右邊");
     })
     arrowLeft.addEventListener("mouseover", function(){
         arrowLeft.style.opacity = "100%";
@@ -70,6 +74,7 @@ document.addEventListener("DOMContentLoaded", function(){
         let attractions = data.data;
         let nextPage = data.nextPage;
         
+        
         // 載入景點資料的 function
         const loadData = () => {
             const attractionsGroup = document.querySelector(".attractionsGroup");
@@ -77,6 +82,12 @@ document.addEventListener("DOMContentLoaded", function(){
                 const attraction = document.createElement("div");
                 attraction.setAttribute("class", "attraction");
                 attractionsGroup.appendChild(attraction);
+                
+                // 點擊圖片會將畫面導到相應景點頁面
+                const id = attractions[i].id;
+                attraction.addEventListener("click", function(){
+                    window.location.href = `/attraction/${id}`;
+                })
 
                 // 放入景點圖片
                 const attractionImg = document.createElement("div");
@@ -101,13 +112,23 @@ document.addEventListener("DOMContentLoaded", function(){
 
                 // 放入景點名稱
                 const detailsNameText = document.createElement("div");
-                detailsNameText.textContent = attractions[i].name;
+                if (attractions[i].name.length > 15){
+                    detailsNameText.textContent = attractions[i].name.substring(0, 14) + "...";
+                }
+                else{
+                    detailsNameText.textContent = attractions[i].name;
+                }
                 detailsNameText.setAttribute("class", "detailsNameText");
                 detailsNameInfo.appendChild(detailsNameText);
 
                 // 放入捷運站名
                 const detailsMrtText = document.createElement("div");
-                detailsMrtText.textContent = attractions[i].mrt;
+                if (attractions[i].mrt === null){
+                    detailsMrtText.textContent = "無";
+                }
+                else{
+                    detailsMrtText.textContent = attractions[i].mrt;
+                }
                 detailsMrtText.setAttribute("class", "detailsMrtText");
                 detailsMrtCatInfo.appendChild(detailsMrtText);
 
@@ -187,9 +208,3 @@ document.addEventListener("DOMContentLoaded", function(){
             })
         })
     })
-
-
-
-
-
-
