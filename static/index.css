@@ -40,6 +40,7 @@ body{
     font-size:30px;
     line-height:34px;
     color:#448899;
+    cursor:pointer;
 }
 .navigationContainer{
     flex:none;
@@ -289,6 +290,11 @@ main{
     border:1px solid #E8E8E8;
     background-color:#FFFFFF;
     cursor:pointer;
+    opacity:1;
+    transition:0.5s;
+}
+.attraction:hover{
+    opacity:0.7;
 }
 .attractionImg{
     position:relative;
@@ -400,6 +406,9 @@ footer{
 @media(max-width:1200px){
     .navigationDiv{
         width:600px;
+    }
+    .navigationText{
+        margin-left:10px;
     }
     .slogan{
         width:600px;
