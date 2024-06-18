@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", function(){
     // 畫面加載
-    let URL = window.location.href;
+    const URL = window.location.href;
     URL = URL.split("/");
     const attractionId = URL[URL.length - 1];
     if (1 <= attractionId && attractionId <= 58){
@@ -8,13 +8,14 @@ document.addEventListener("DOMContentLoaded", function(){
             return response.json();
         }).then(function(data){
             const attraction = data.data;
+            const attractionImage = attraction.images;
 
             // 渲染景點圖片
             const pictures = document.querySelector(".pictures");
-            const amount =  attraction.images.length;
+            const amount =  attractionImage.length;
             const picture = document.createElement("div");
             picture.setAttribute("class", "picture");
-            picture.style.backgroundImage = "url(" + attraction.images[0] + ")";
+            picture.style.backgroundImage = "url(" + attractionImage[0] + ")";
             pictures.appendChild(picture);
 
             // 定義目前所在的圖片位置，預設為 0
@@ -37,7 +38,7 @@ document.addEventListener("DOMContentLoaded", function(){
                     current = i;
                     targetId = "circle" + i;
                     changeCircle();
-                    picture.style.backgroundImage = "url(" + attraction.images[i] + ")";
+                    picture.style.backgroundImage = "url(" + attractionImage[i] + ")";
                 })
             }
 
@@ -50,13 +51,13 @@ document.addEventListener("DOMContentLoaded", function(){
             leftArrow.addEventListener("click", function(){
                 picture.classList.add("fade-out");
                 if (current === 0){
-                    picture.style.backgroundImage = "url(" + attraction.images[amount-1] + ")";
+                    picture.style.backgroundImage = "url(" + attractionImage[amount-1] + ")";
                     current = amount - 1;
                     targetId = "circle" + current;
                     changeCircle();
                 }
                 else if (current > 0){
-                    picture.style.backgroundImage = "url(" + attraction.images[current-1] + ")";
+                    picture.style.backgroundImage = "url(" + attractionImage[current-1] + ")";
                     current--;
                     targetId = "circle" + current;
                     changeCircle();
@@ -66,13 +67,13 @@ document.addEventListener("DOMContentLoaded", function(){
             rightArrow.addEventListener("click", function(){
                 picture.classList.add("fade-out");
                 if (current === amount-1){
-                    picture.style.backgroundImage = "url(" + attraction.images[0] + ")";
+                    picture.style.backgroundImage = "url(" + attractionImage[0] + ")";
                     current = 0;
                     targetId = "circle" + current;
                     changeCircle();
                 }
                 else if (current < amount-1){
-                    picture.style.backgroundImage = "url(" + attraction.images[current+1] + ")";
+                    picture.style.backgroundImage = "url(" + attractionImage[current+1] + ")";
                     current++;
                     targetId = "circle" + current;
                     changeCircle();

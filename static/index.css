@@ -306,6 +306,13 @@ main{
     height:196px;
     border-radius:5px 5px 0px 0px;
 }
+.nonattraction{
+    width:200px;
+    font-family:"Noto Sans TC", sans-serif;
+    font-size:28px;
+    font-weight:700;
+    color:#666666;
+}
 .detailsName{
     position:absolute;bottom:0px;
     flex:none;

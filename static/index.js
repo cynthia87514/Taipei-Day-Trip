@@ -67,13 +67,16 @@ document.addEventListener("DOMContentLoaded", function(){
     
 
     let keyword = null;
+    // 設置變數儲存 loading 狀態
+    let loading = false;
+
     // 景點圖片、名稱、種類、對應的捷運站
     fetch("./api/attractions?page=0").then(function(response){
         return response.json();
     }).then(function(data){
+        let loading = true;
         let attractions = data.data;
         let nextPage = data.nextPage;
-        
         
         // 載入景點資料的 function
         const loadData = () => {
@@ -200,11 +203,27 @@ document.addEventListener("DOMContentLoaded", function(){
                 fetch(URL).then(function(response){
                     return response.json(); 
                 }).then(function(data){
-                    attractions = data.data;
-                    nextPage = data.nextPage;
-                    loadData();
+                    // 若 keyword 搜尋結果為空，則返回 "查無相關資料"
+                    if (data.data.length === 0){
+                        const nonattraction = document.createElement("div");
+                        nonattraction.textContent = "查無相關資料";
+                        nonattraction.setAttribute("class", "nonattraction");
+                        attractionsGroup.appendChild(nonattraction);
+                    }
+                    else{
+                        attractions = data.data;
+                        nextPage = data.nextPage;
+                        loadData();
+                    }
                     })
                 }
             })
+        })
+
+        // 設定按下 Enter 鍵時，觸發按下搜尋鍵的效果
+        document.querySelector("input").addEventListener("keypress", function(event){
+            if (event.key === "Enter"){
+                document.querySelector(".searchBtn").click();
+            }
         })
     })

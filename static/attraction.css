@@ -189,7 +189,7 @@ section{
     background-size:cover;
     background-position:center;
     border-radius:5px;
-    transition:1s ease;
+    transition:1s;
     opacity:1;
 }
 .picture.fade-out{
@@ -523,9 +523,7 @@ footer{
         display:flex;
         justify-content:normal;
         align-items:center;
-        overflow-x:auto;
-        overflow-anchor:auto;
-        scrollbar-width:thin;
+        overflow-x:hidden;
     }
 }
 @media(max-width:835px){
@@ -569,9 +567,7 @@ footer{
         display:flex;
         justify-content:center;
         align-items:center;
-        overflow-x:auto;
-        overflow-anchor:auto;
-        scrollbar-width:thin;
+        overflow-x:hidden;
     }
     .explain{
         height:48px;
