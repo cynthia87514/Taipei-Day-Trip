@@ -11,6 +11,142 @@
 body{
     overflow-x:hidden;
 }
+.dialogSignin, .dialogSignup{
+    display:none;
+    position:fixed;
+    top:80px;
+    left:50%;
+    transform:translateX(-50%);
+    z-index:3;
+    box-sizing:border-box;
+    width:340px;
+    height:auto;
+    border-radius:6px;
+    background-color:#FFFFFF;
+    box-shadow:0px 4px 60px 0px #AAAAAA;
+}
+.colorBar{
+    width:100%;
+    height:10px;
+    border-radius:4px 4px 0px 0px;
+    background:linear-gradient(270deg, #337788 0%, #66AABB 100%);
+}
+.cross{
+    position:absolute;
+    top:27px;
+    right:17px;
+    width:16px;
+    height:16px;
+    cursor:pointer;
+}
+.signinBox, .signupBox{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    margin:15px;
+}
+.signinHead, .signupHead{
+    flex:none;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    width:100%;
+    height:27px;
+}
+.signinHeadText, .signupHeadText{
+    flex:none;
+    font-family:"Noto Sans TC", sans-serif;
+    font-size:24px;
+    font-weight:700;
+    line-height:24px;
+    text-align:center;
+    color:#666666;
+}
+.signinForm, .signupForm{
+    flex:none;
+    width:100%;
+    margin-top:15px;
+}
+.emailBox, .passwordBox, .nameBox{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    width:100%;
+    height:47px;
+    box-sizing:border-box;
+    margin-bottom:10px;
+    background-color:#FFFFFF;
+    border:1px solid #CCCCCC;
+    border-radius:5px;
+}
+.emailSignin, .passwordSignin, .nameSignup, .emailSignup, .passwordSignup{
+    flex:none;
+    width:280px;
+    height:17px;
+    font-family:"Noto Sans TC", sans-serif;
+    font-size:16px;
+    font-weight:500;
+    text-align:left;
+    color:#757575;
+
+}
+.submitBox{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    width:100%;
+    height:47px;
+    margin-bottom:10px;
+    background-color:#448899;
+    border-radius:5px;
+    cursor:pointer;
+}
+.submitSignin, .submitSignup{
+    flex:none;
+    width:270px;
+    height:27px;
+    margin:auto;
+    font-family:"Noto Sans TC", sans-serif;
+    font-size:19px;
+    font-weight:400;
+    text-align:center;
+    background-color:#448899;
+    color:#FFFFFF;
+    cursor:pointer;
+}
+.toSignup, .toSignin, .signinResultFailed, .signupResultOk, .signupResultFailed{
+    flex:none;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    width:100%;
+    height:22px;
+    font-family:"Noto Sans TC", sans-serif;
+    font-size:16px;
+    font-weight:500;
+    text-align:center;
+    color:#666666;
+}
+.signinResultFailed, .signupResultOk, .signupResultFailed{
+    display:none;
+}
+.signupResultOk.active{
+    display:block;
+    margin-bottom:10px;
+    color:green;
+}
+.signinResultFailed.active, .signupResultFailed.active{
+    display:block;
+    margin-bottom:10px;
+    color:red;
+}
+.toSignupText, .toSigninText, .signinResultFailedText, .signupResultOkText, .signupResultFailedText{
+    flex:none;
+}
+.toSignupBtn, .toSigninBtn{
+    flex:none;
+    cursor:pointer;
+}
 .navigation{
     position:sticky;
     top:0px;
@@ -64,15 +200,19 @@ body{
     font-size:16px;
     line-height:13.3px;
     color:#666666;
+    cursor:pointer;
 }
-.navigationButtonRight{
+.navigationButtonRight, .navigationButtonRightSignout{
     flex:none;
     width:71px;
     height:14px;
     justify-content:space-between;
     padding:10px;
 }
-.navigationButtonRightText{
+.navigationButtonRightSignout{
+    display:none;
+}
+.navigationButtonRightText, .navigationButtonRightSignoutText{
     width:71px;
     height:14px;
     font-family:"Noto Sans TC", sans-serif;
@@ -80,6 +220,7 @@ body{
     font-size:16px;
     line-height:13.3px;
     color:#666666;
+    cursor:pointer;
 }
 main{
     display:flex;
@@ -189,7 +330,7 @@ section{
     background-size:cover;
     background-position:center;
     border-radius:5px;
-    transition:1s ease;
+    transition:1s;
     opacity:1;
 }
 .picture.fade-out{
@@ -500,6 +641,17 @@ footer{
     line-height:13.3px;
     color:#FFFFFF;
 }
+.overlay{
+    position:fixed;
+    top:0;
+    left:0;
+    display:none;
+    z-index:2;
+    width:100%;
+    height:100%;
+    background-color:#000000;
+    opacity:25%;
+}
 
 @media(max-width:1200px){
     .navigationDiv{
@@ -523,9 +675,7 @@ footer{
         display:flex;
         justify-content:normal;
         align-items:center;
-        overflow-x:auto;
-        overflow-anchor:auto;
-        scrollbar-width:thin;
+        overflow-x:hidden;
     }
 }
 @media(max-width:835px){
@@ -569,9 +719,7 @@ footer{
         display:flex;
         justify-content:center;
         align-items:center;
-        overflow-x:auto;
-        overflow-anchor:auto;
-        scrollbar-width:thin;
+        overflow-x:hidden;
     }
     .explain{
         height:48px;
