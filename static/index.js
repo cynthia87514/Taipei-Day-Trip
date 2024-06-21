@@ -307,14 +307,23 @@ async function updatePage(){
 const signupForm = document.querySelector(".signupForm");
 signupForm.addEventListener("submit", function(event){
     event.preventDefault();
-    const formData = new FormData(signupForm);
-    if (formData.get("name").trim() === "" || formData.get("email").trim() === "" || formData.get("password").trim() === ""){
+    const name = document.querySelector(".nameSignup").value;
+    const email = document.querySelector(".emailSignup").value;
+    const password = document.querySelector(".passwordSignup").value;
+    let jsonObject = {};
+    jsonObject["name"] = name;
+    jsonObject["email"] = email;
+    jsonObject["password"] = password;
+    if (name.trim() === "" || email.trim() === "" || password.trim() === ""){
         alert("請確認填寫所有欄位");
         return;
     }else{
         fetch("/api/user", {
             method: "POST",
-            body: formData
+            headers:{
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(jsonObject)
         }).then(function(response){
             return response.json();
         }).then(function(data){
@@ -335,18 +344,25 @@ signupForm.addEventListener("submit", function(event){
 const signinForm = document.querySelector(".signinForm");
 signinForm.addEventListener("submit", function(event){
     event.preventDefault();
-    const formData = new FormData(signinForm);
+    const email = document.querySelector(".emailSignin").value;
+    const password = document.querySelector(".passwordSignin").value;
     const signinResultFailed = document.querySelector(".signinResultFailed");
-    if (formData.get("email").trim() === "" || formData.get("password").trim() === ""){
+    let jsonObject = {};
+    jsonObject["email"] = email;
+    jsonObject["password"] = password;
+    if (email.trim() === "" || password.trim() === ""){
         alert("請確認填寫所有欄位");
         return;
     }else{
         fetch("/api/user/auth", {
             method: "PUT",
-            body: formData
+            headers:{
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(jsonObject)
         }).then(function(response){
             return response.json();
-        }).then(function(data){
+        }).then(function(data){ 
             if (data.token){
                 localStorage.setItem("token", data.token);
                 location.reload();

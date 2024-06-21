@@ -1,10 +1,12 @@
 from fastapi import *
-from fastapi.responses import FileResponse, JSONResponse
+from fastapi import Body
+from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 import mysql.connector
 from mysql.connector import pooling
 import ast, jwt
 from datetime import datetime, timedelta
+from pydantic import BaseModel
 
 app = FastAPI()
 cnxpool = mysql.connector.pooling.MySQLConnectionPool(
@@ -71,12 +73,24 @@ async def booking(request: Request):
 async def thankyou(request: Request):
 	return FileResponse("./static/thankyou.html", media_type="text/html")
 
+class SignupRequest(BaseModel):
+	name: str
+	email: str
+	password: str
+
+class SigninRequest(BaseModel):
+	email: str
+	password: str
+
 # User APIs
 # 註冊一個新的會員
 @app.post("/api/user")
-async def signup(request: Request, response: Response, name: str = Form(...), email: str = Form(...), password: str = Form(...)):
+async def signup(request: Request, response: Response, user_data: SignupRequest = Body(...)):
 	con, cursor = get_db_connection()
 	try:
+		name = user_data.name
+		email = user_data.email
+		password = user_data.password
 		cursor.execute("SELECT * FROM `users` WHERE email = %s;", (email,))
 		existing_user = cursor.fetchone()
 		if existing_user is None:
@@ -87,7 +101,7 @@ async def signup(request: Request, response: Response, name: str = Form(...), em
 				}
 			return response
 		else:
-			# response.status_code = 400
+			response.status_code = 400
 			response = {
 				"error": True,
 				"message": "註冊失敗，重複的 Email 或其他原因"
@@ -136,11 +150,16 @@ async def user_data(request: Request, response: Response):
 
 # 登入會員帳戶
 @app.put("/api/user/auth")
-async def signin(request: Request, response: Response, email: str = Form(...), password: str = Form(...)):
+async def signin(request: Request, response: Response, user_data: SigninRequest = Body(...)):
 	con, cursor = get_db_connection()
 	try:
+		email = user_data.email
+		password = user_data.password
+		print(email)
+		print(password)
 		cursor.execute("SELECT id, name, email FROM `users` WHERE email = %s AND password = %s", (email, password))
 		user = cursor.fetchone()
+		print(user)
 		if user:
 			id = user["id"]
 			name = user["name"]
