@@ -223,7 +223,6 @@ document.querySelector("input").addEventListener("keypress", function(event){
     }
 })
 
-
 // Pop-Up Dialog for User Sign Up/In
 const dialogSignin = document.querySelector(".dialogSignin");
 const dialogSignup = document.querySelector(".dialogSignup");

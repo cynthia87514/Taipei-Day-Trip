@@ -8,16 +8,20 @@ import ast, jwt
 from datetime import datetime, timedelta
 from pydantic import BaseModel
 
+# 設置環境變數
+from dotenv import dotenv_values
+secrets = dotenv_values(".env")
+
 app = FastAPI()
 cnxpool = mysql.connector.pooling.MySQLConnectionPool(
     pool_name = "mypool",
     pool_size = 32,
     pool_reset_session = True,
-	host="localhost",
-    port="3306",
-    user="root",
-    password="19980514",
-    database="taipei-day-trip"
+	host = secrets["MYSQL_HOST"],
+    port = secrets["MYSQL_PORT"],
+    user = secrets["MYSQL_USER"],
+    password = secrets["MYSQL_PASSWORD"],
+    database = secrets["MYSQL_DATABASE"]
 )
 
 def get_db_connection():
@@ -32,7 +36,7 @@ def get_db_connection():
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
 # Secret key to sign JWT token
-secret_key = "mysecretkey"
+secret_key = secrets["JWT_SECRET_KEY"]
 
 # Create JWT token
 def create_jwt_token(id: int, name: str, email: str) -> str:
