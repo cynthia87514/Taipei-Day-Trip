@@ -126,31 +126,25 @@ async def signup(request: Request, response: Response, user_data: SignupRequest 
 # 取得當前登入的會員資訊
 @app.get("/api/user/auth")
 async def user_data(request: Request, response: Response):
-	con, cursor = get_db_connection()
-	try:
-		token = request.headers.get("Authorization").replace("Bearer ", "")
-		payload = verify_jwt_token(token)
-		if payload is not None:
-			id = payload.get("sub")
-			cursor.execute("SELECT id, name, email FROM `users` WHERE id = %s", (id,))
-			user = cursor.fetchone()
-			response = {
-				"data": {
-					"id": user["id"],
-					"name": user["name"],
-					"email": user["email"]
-				}
+	token = request.headers.get("Authorization").replace("Bearer ", "")
+	payload = verify_jwt_token(token)
+	if payload is not None:
+		id = payload.get("sub")
+		name = payload.get("name")
+		email = payload.get("email")
+		response = {
+			"data": {
+				"id": id,
+				"name": name,
+				"email": email
 			}
-			return response
-		else:
-			response = {
-				"data": None
-			}
-			return response
-	finally:
-		print("--------------------------------------------------------")
-		con.close()
-		print("Successfully returned the connection to connection pool.")
+		}
+		return response
+	else:
+		response = {
+			"data": None
+		}
+		return response	
 
 # 登入會員帳戶
 @app.put("/api/user/auth")
