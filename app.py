@@ -126,7 +126,7 @@ async def signup(request: Request, response: Response, user_data: SignupRequest 
 # 取得當前登入的會員資訊
 @app.get("/api/user/auth")
 async def user_data(request: Request, response: Response):
-	token = request.headers.get("Authorization").replace("Bearer ", "")
+	token = request.headers.get("Authorization", "").replace("Bearer ", "")
 	payload = verify_jwt_token(token)
 	if payload is not None:
 		id = payload.get("sub")
@@ -365,3 +365,144 @@ async def mrtslist(request: Request, response: Response):
 		print("--------------------------------------------------------")
 		con.close()
 		print("Successfully returned the connection to connection pool.")
+
+# Booking APIs
+
+class createBookingRequest(BaseModel):
+	attractionId: int
+	date: str
+	time: str
+	price: int
+
+
+# 取得尚未確認下單的預定行程
+@app.get("/api/booking")
+async def booking(request: Request, response: Response, user_data: dict = Depends(user_data)):
+	token = request.headers.get("Authorization", "").replace("Bearer ", "")
+	payload = verify_jwt_token(token)
+	if payload is None:
+		response.status_code = 403
+		response = {
+			"error": True,
+			"message": "未登入系統，拒絕存取"
+			}
+		return response
+	else:
+		con, cursor = get_db_connection()
+		try:
+			user_id = user_data["data"]["id"]
+			cursor.execute("SELECT * FROM `booking` WHERE user_id = %s", (user_id,))
+			existing_booking = cursor.fetchone()
+			if existing_booking:
+				attraction_id = existing_booking["attraction_id"]
+				cursor.execute("SELECT name, address, images FROM `attractions` WHERE id = %s", (attraction_id,))
+				attraction_data = cursor.fetchone()
+				response = {
+					"data": {
+						"attraction": {
+							"id": attraction_id,
+							"name": attraction_data["name"],
+							"address": attraction_data["address"],
+							"image": ast.literal_eval(attraction_data["images"])[0]
+						},
+						"date": existing_booking["date"],
+						"time": existing_booking["time"],
+						"price": existing_booking["price"]
+					}
+				}
+				return response
+			else:
+				response = {
+					"data": None
+				}
+				return response
+		finally:
+			print("--------------------------------------------------------")
+			con.close()
+			print("Successfully returned the connection to connection pool.")
+
+# 建立新的預定行程
+@app.post("/api/booking")
+async def create_booking(request: Request, response: Response, user_data: dict = Depends(user_data), booking_data: createBookingRequest = Body(...)):
+	token = request.headers.get("Authorization", "").replace("Bearer ", "")
+	payload = verify_jwt_token(token)
+	if payload is None:
+		response.status_code = 403
+		response = {
+			"error": True,
+			"message": "未登入系統，拒絕存取"
+			}
+		return response
+	else:
+		con, cursor = get_db_connection()
+		try:
+			user_id = user_data["data"]["id"]
+			attractionId = booking_data.attractionId
+			date = booking_data.date
+			time = booking_data.time
+			price = booking_data.price
+			cursor.execute("SELECT * FROM `booking` WHERE user_id = %s;", (user_id,))
+			existing_booking = cursor.fetchone()
+			if existing_booking:
+				sql = "UPDATE `booking` SET attraction_id = %s, date = %s, time = %s, price = %s WHERE user_id = %s"
+				val = (attractionId, date, time, price, user_id)
+				cursor.execute(sql, val)
+				con.commit()
+				response = {
+					"ok": True
+					}
+				return response
+			elif existing_booking is None:
+				sql = "INSERT INTO `booking` (user_id, attraction_id, date, time, price) VALUES (%s, %s, %s, %s, %s)"
+				val = (user_id, attractionId, date, time, price)
+				cursor.execute(sql, val)
+				con.commit()
+				response = {
+					"ok": True
+					}
+				return response
+			else:
+				response.status_code = 400
+				response = {
+					"error": True,
+					"message": "建立失敗，輸入不正確或其他原因"
+					}
+				return response
+		except:
+			response.status_code = 500
+			response = {
+				"error": True,
+				"message": "伺服器內部錯誤"
+				}
+			return response
+		finally:
+			print("--------------------------------------------------------")
+			con.close()
+			print("Successfully returned the connection to connection pool.")
+
+# 刪除目前的預定行程
+@app.delete("/api/booking")
+async def delete_booking(request: Request, response: Response, user_data: dict = Depends(user_data)):
+	token = request.headers.get("Authorization", "").replace("Bearer ", "")
+	payload = verify_jwt_token(token)
+	if payload is None:
+		response.status_code = 403
+		response = {
+			"error": True,
+			"message": "未登入系統，拒絕存取"
+			}
+		return response
+	else:
+		con, cursor = get_db_connection()
+		try:
+			user_id = user_data["data"]["id"]
+			cursor.execute("DELETE FROM `booking` WHERE user_id = %s;", (user_id,))
+			con.commit()
+			response = {
+				"ok": True
+				}
+			return response
+		finally:
+			print("--------------------------------------------------------")
+			con.close()
+			print("Successfully returned the connection to connection pool.")
