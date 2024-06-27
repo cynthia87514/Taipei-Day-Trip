@@ -1,9 +1,3 @@
-// 點擊 台北一日遊 回到首頁
-const navigationText = document.querySelector(".navigationText");
-navigationText.addEventListener("click", function(){
-window.location.href = "/";
-})
-
 // 點擊左右箭頭按鈕的 function
 const arrowLeft = document.querySelector(".arrowLeft");
 const arrowRight = document.querySelector(".arrowRight");
@@ -223,53 +217,10 @@ document.querySelector("input").addEventListener("keypress", function(event){
     }
 })
 
-
-// Pop-Up Dialog for User Sign Up/In
-const dialogSignin = document.querySelector(".dialogSignin");
-const dialogSignup = document.querySelector(".dialogSignup");
-const overlay = document.querySelector(".overlay");
-const signupResultOk = document.querySelector(".signupResultOk");
-const signupResultFailed = document.querySelector(".signupResultFailed");
-
-// 點按 登入/註冊 開啟 Dialog SignIn (Default)
-document.querySelector(".navigationButtonRightText").addEventListener("click", function(){
-    dialogSignin.style.display = "block";
-    dialogSignup.style.display = "none";
-    overlay.style.display = "block";
-})
-// 點按 註冊 開啟 Dialog SignUp
-document.querySelector(".toSignupBtn").addEventListener("click", function(){
-    dialogSignup.style.display = "block";
-    dialogSignin.style.display = "none";
-})
-// 點按 登入 開啟 Dialog SignIn
-document.querySelector(".toSigninBtn").addEventListener("click", function(){
-    dialogSignin.style.display = "block";
-    dialogSignup.style.display = "none";
-    signupResultOk.classList.remove("active");
-    signupResultFailed.classList.remove("active");
-    signupForm.reset();
-})
-// 點按 cross 關閉 Dialog
-document.querySelectorAll(".cross").forEach(function(item){
-    item.addEventListener("click", function(){
-        dialogSignin.style.display = "none";
-        dialogSignup.style.display = "none";
-        signupResultOk.classList.remove("active");
-        signupResultFailed.classList.remove("active");
-        overlay.style.display = "none";
-        signupForm.reset();
-    })
-})
-
-// User Sign-In Status Checking Procedure
+// 確認登入狀態
 async function fetchUserData(){
     try{
         const token = localStorage.getItem("token");
-        if (!token){
-            const data = null;
-            return data;
-        }
         const response = await fetch("/api/user/auth", {
             method: "GET",
             headers: {
@@ -283,15 +234,15 @@ async function fetchUserData(){
     }
 }
 
-async function updatePage(){
+// 依照使用者登入狀態調整右上角顯示：登入/註冊 或 登出系統
+async function updatePage(userStatus){
     const signin = document.querySelector(".navigationButtonRight");
     const signout = document.querySelector(".navigationButtonRightSignout");
     try{
-        const userData = await fetchUserData();
-        if (userData === null){
+        if (userStatus === null){
             return;
         }
-        else if(userData.data){
+        else if(userStatus.data){
             signin.style.display = "none";
             signout.style.display = "block";
         }else{
@@ -303,85 +254,8 @@ async function updatePage(){
     }
 }
 
-// Sign Up Procedure
-const signupForm = document.querySelector(".signupForm");
-signupForm.addEventListener("submit", function(event){
-    event.preventDefault();
-    const name = document.querySelector(".nameSignup").value;
-    const email = document.querySelector(".emailSignup").value;
-    const password = document.querySelector(".passwordSignup").value;
-    let jsonObject = {};
-    jsonObject["name"] = name;
-    jsonObject["email"] = email;
-    jsonObject["password"] = password;
-    if (name.trim() === "" || email.trim() === "" || password.trim() === ""){
-        alert("請確認填寫所有欄位");
-        return;
-    }else{
-        fetch("/api/user", {
-            method: "POST",
-            headers:{
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(jsonObject)
-        }).then(function(response){
-            return response.json();
-        }).then(function(data){
-            if (data.ok){
-                signupResultOk.classList.add("active");
-                signupResultFailed.classList.remove("active");
-            }else{
-                signupResultFailed.classList.add("active");
-                signupResultOk.classList.remove("active");
-            }
-        }).catch(function(error){
-            console.log(error);
-        })
-    }
-})
-
-// Sign In Procedure
-const signinForm = document.querySelector(".signinForm");
-signinForm.addEventListener("submit", function(event){
-    event.preventDefault();
-    const email = document.querySelector(".emailSignin").value;
-    const password = document.querySelector(".passwordSignin").value;
-    const signinResultFailed = document.querySelector(".signinResultFailed");
-    let jsonObject = {};
-    jsonObject["email"] = email;
-    jsonObject["password"] = password;
-    if (email.trim() === "" || password.trim() === ""){
-        alert("請確認填寫所有欄位");
-        return;
-    }else{
-        fetch("/api/user/auth", {
-            method: "PUT",
-            headers:{
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(jsonObject)
-        }).then(function(response){
-            return response.json();
-        }).then(function(data){ 
-            if (data.token){
-                localStorage.setItem("token", data.token);
-                location.reload();
-            }else{
-                signinResultFailed.classList.add("active");
-            }
-        }).catch(function(error){
-            console.log(error);
-        })
-    }
-})
-
 // 載入頁面時確認使用者狀態
-document.addEventListener("DOMContentLoaded", function(){
-    updatePage();
-})
-
-// Sign Out Procedure
-document.querySelector(".navigationButtonRightSignoutText").addEventListener("click", function(){
-    localStorage.removeItem("token");
-    location.reload();
+document.addEventListener("DOMContentLoaded", async function(){
+    const userStatus = await fetchUserData();
+    updatePage(userStatus);
 })

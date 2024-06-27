@@ -131,12 +131,6 @@ else{
     window.location.href = "/";
 }
 
-// 點擊 台北一日遊 回到首頁
-const navigationText = document.querySelector(".navigationText");
-navigationText.addEventListener("click", function(){
-    window.location.href = "/";
-})
-
 // 點擊 不同時段(上 / 下半天) 切換導覽費用
 const upRadio = document.querySelector("#upRadio");
 const downRadio = document.querySelector("#downRadio");
@@ -150,43 +144,12 @@ downRadio.addEventListener("change", function(){
     priceDollars.setAttribute("class", "priceDollars");
 })
 
-// Pop-Up Dialog for User Sign Up/In
-let dialogSignin = document.querySelector(".dialogSignin");
-let dialogSignup = document.querySelector(".dialogSignup");
-let overlay = document.querySelector(".overlay");
-// 點按 登入/註冊 開啟 Dialog SignIn (Default)
-document.querySelector(".navigationButtonRightText").addEventListener("click", function(){
-    dialogSignin.style.display = "block";
-    dialogSignup.style.display = "none";
-    overlay.style.display = "block";
-})
-// 點按 註冊 開啟 Dialog SignUp
-document.querySelector(".toSignupBtn").addEventListener("click", function(){
-    dialogSignup.style.display = "block";
-    dialogSignin.style.display = "none";
-})
-// 點按 登入 開啟 Dialog SignIn
-document.querySelector(".toSigninBtn").addEventListener("click", function(){
-    dialogSignin.style.display = "block";
-    dialogSignup.style.display = "none";
-})
-// 點按 cross 關閉 Dialog
-document.querySelectorAll(".cross").forEach(function(item){
-    item.addEventListener("click", function(){
-        dialogSignin.style.display = "none";
-        dialogSignup.style.display = "none";
-        overlay.style.display = "none";
-    })
-})
 
-// User Sign-In Status Checking Procedure
+
+// 確認登入狀態
 async function fetchUserData(){
     try{
         const token = localStorage.getItem("token");
-        if (!token){
-            const data = null;
-            return data;
-        }
         const response = await fetch("/api/user/auth", {
             method: "GET",
             headers: {
@@ -200,15 +163,15 @@ async function fetchUserData(){
     }
 }
 
-async function updatePage(){
+// 依照使用者登入狀態調整右上角顯示：登入/註冊 或 登出系統
+async function updatePage(userStatus){
     const signin = document.querySelector(".navigationButtonRight");
     const signout = document.querySelector(".navigationButtonRightSignout");
     try{
-        const userData = await fetchUserData();
-        if (userData === null){
+        if (userStatus === null){
             return;
         }
-        else if(userData.data){
+        else if(userStatus.data){
             signin.style.display = "none";
             signout.style.display = "block";
         }else{
@@ -220,71 +183,87 @@ async function updatePage(){
     }
 }
 
-// Sign Up Procedure
-const signupForm = document.querySelector(".signupForm");
-signupForm.addEventListener("submit", function(event){
-    event.preventDefault();
-    const formData = new FormData(signupForm);
-    const signupResultOk = document.querySelector(".signupResultOk");
-    const signupResultFailed = document.querySelector(".signupResultFailed");
-    if (formData.get("name").trim() === "" || formData.get("email").trim() === "" || formData.get("password").trim() === ""){
-        alert("請確認填寫所有欄位");
-        return;
-    }else{
-        fetch("/api/user", {
-            method: "POST",
-            body: formData
-        }).then(function(response){
-            return response.json();
-        }).then(function(data){
-            if (data.ok){
-                signupResultOk.classList.add("active");
-                signupResultFailed.classList.remove("active");
-            }else{
-                signupResultFailed.classList.add("active");
-                signupResultOk.classList.remove("active");
-            }
-        }).catch(function(error){
-            console.log(error);
-        })
-    }
-})
-
-// Sign In Procedure
-const signinForm = document.querySelector(".signinForm");
-signinForm.addEventListener("submit", function(event){
-    event.preventDefault();
-    const formData = new FormData(signinForm);
-    const signinResultFailed = document.querySelector(".signinResultFailed");
-    if (formData.get("email").trim() === "" || formData.get("password").trim() === ""){
-        alert("請確認填寫所有欄位");
-        return;
-    }else{
-        fetch("/api/user/auth", {
-            method: "PUT",
-            body: formData
-        }).then(function(response){
-            return response.json();
-        }).then(function(data){
-            if (data.token){
-                localStorage.setItem("token", data.token);
-                location.reload();
-            }else{
-                signinResultFailed.classList.add("active");
-            }
-        }).catch(function(error){
-            console.log(error);
-        })
-    }
-})
-
 // 載入頁面時確認使用者狀態
-document.addEventListener("DOMContentLoaded", function(){
-    updatePage();
+document.addEventListener("DOMContentLoaded", async function(){
+    const userStatus = await fetchUserData();
+    updatePage(userStatus);
 })
 
-// Sign Out Procedure
-document.querySelector(".navigationButtonRightSignoutText").addEventListener("click", function(){
-    localStorage.removeItem("token");
-    location.reload();
+// 建立新的預定行程
+// 按下 開始預約行程
+const bookingForm = document.querySelector(".booking");
+bookingForm.addEventListener("submit", async function(event){
+    event.preventDefault();
+    bookingTrip();
 })
+
+function bookingTrip(){
+    const {date, time, price} = getBookingData();
+    const jsonObject = {
+        attractionId: parseInt(attractionId),
+        date: date,
+        time: time,
+        price: parseInt(price)
+    };
+    if (date === ""){
+        alert("請選擇欲訂購的日期");
+        return;
+    }else{
+        createBooking(jsonObject);
+    }
+}
+
+function createBooking(jsonObject){
+    fetch("/api/booking", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${localStorage.getItem("token")}`
+        },
+        body: JSON.stringify(jsonObject)
+    }).then(function(response){
+        if (response.status === 403){
+            showSignIn();
+            return Promise.reject();
+        }
+        return response.json();
+    }).then(function(data){
+        if (data.ok === true){
+            window.location.href = "/booking";
+        }
+        if (data.error === true){
+            alert("預約失敗，請再次嘗試");
+        }
+    }).catch(function(error){
+        console.log(error);
+    });
+}
+
+// 獲得預定表單內的資料
+function getBookingData(){
+    const date = document.querySelector(".dateInput").value;
+    const radioButtons = document.querySelectorAll("input[name = 'time']");
+    let selected = "";
+    let time = "";
+    radioButtons.forEach(function(button){
+        if (button.checked){
+            selected = button.value;
+        }
+    })
+    if (selected === "上半天"){
+        time = "morning";
+    }
+    if (selected === "下半天"){
+        time = "afternoon";
+    }
+    let priceText = document.querySelector(".priceDollars").textContent;
+    priceText = priceText.split(" ");
+    price = priceText[1];
+    return {date, time, price};
+}
+
+function showSignIn(){
+    dialogSignin.style.display = "block";
+    dialogSignup.style.display = "none";
+    overlay.style.display = "block";
+}

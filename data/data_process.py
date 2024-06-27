@@ -1,6 +1,6 @@
 import json, mysql.connector, re
 
-with open("taipei-attractions.json", "r", encoding="utf-8") as f:
+with open("./data/taipei-attractions.json", "r", encoding="utf-8") as f:
     data = json.load(f)
     result = data["result"]
     results = result["results"]
