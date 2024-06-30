@@ -214,6 +214,7 @@ function bookingTrip(){
 }
 
 function createBooking(jsonObject){
+    // 先判斷token有無
     fetch("/api/booking", {
         method: "POST",
         headers: {

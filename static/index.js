@@ -55,7 +55,6 @@ for (let i = 0 ; i < mrts.length ; i++){
         listItemText.style.color = "#666666";
     })
 }
-
 })
 
 
@@ -166,7 +165,6 @@ const callback = (entries, observer) => {
                     loadData();
                 })
             }
-            
         }
     });
 }
