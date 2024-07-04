@@ -5,8 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>預定行程 - 台北一日遊</title>
   <link rel="stylesheet" type="text/css" href="/static/booking.css"/>
-  <script src="/static/booking.js" defer></script>
   <script src="/static/navigation.js" defer></script>
+  <script src="https://js.tappaysdk.com/sdk/tpdirect/v5.14.0" defer></script>
+  <script src="/static/booking.js" defer></script>
 </head>
 <body>
   <div class="dialogSignin">
@@ -155,31 +156,27 @@
         <div class="paymentTitle">
           <div class="paymentTitleText">信用卡付款資訊</div>
         </div>
-        <div class="cardNumber">
-          <div class="cardNumberTitle">卡片號碼：</div>
-          <div class="cardNumberInputBox">
-            <input type="text" name="cardNumber" class="cardNumberInput" placeholder="**** **** **** ****">
+        <form id="paymentForm">
+          <div class="cardNumberBox">
+            <label for="cardNumber" class="cardNumberTitle">卡片號碼：</label>
+            <div id="cardNumber"></div>
           </div>
-        </div>
-        <div class="expireTime">
-          <div class="expireTimeTitle">過期時間：</div>
-          <div class="expireTimeInputBox">
-            <input type="text" name="expireTime" class="expireTimeInput" placeholder="MM / YY">
+          <div class="cardExpirationDateBox">
+            <label for="cardExpirationDate" class="cardExpirationDateTitle">過期時間：</label>
+            <div id="cardExpirationDate"></div>
           </div>
-        </div>
-        <div class="verify">
-          <div class="verifyTitle">驗證密碼：</div>
-          <div class="verifyInputBox">
-            <input type="password" name="verify" class="verifyInput" placeholder="CVV">
+          <div class="cardCCVBox">
+            <label for="cardCCV" class="cardCCVTitle">驗證密碼：</label>
+            <div id="cardCCV"></div>
           </div>
-        </div>
+        </form>
       </div>
       <div class="separator"></div>
       <div class="confirm">
         <div class="totalPrice">
           <div class="totalPriceText"></div>
         </div>
-        <div class="button">
+        <div class="button" id="submitButton" disabled>
           <div class="buttonText">確認訂購並付款</div>
         </div>
       </div>

@@ -46,6 +46,18 @@ document.querySelectorAll(".cross").forEach(function(item){
     })
 })
 
+// 點擊框框外的畫面也可關閉框框
+overlay.addEventListener("click", function(event){
+    if (event.target === overlay){
+        dialogSignin.style.display = "none";
+        dialogSignup.style.display = "none";
+        signupResultOk.classList.remove("active");
+        signupResultFailed.classList.remove("active");
+        overlay.style.display = "none";
+        signupForm.reset();
+    }
+})
+
 // 註冊流程 /////////////////////////////////////////////////////////////////////////////
 const signupForm = document.querySelector(".signupForm");
 signupForm.addEventListener("submit", function(event){
