@@ -3,9 +3,144 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Thank You</title>
+  <title>訂購完成 - 台北一日遊</title>
+  <link rel="stylesheet" type="text/css" href="/static/thankyou.css"/>
+  <script src="/static/navigation.js" defer></script>
+  <script src="/static/thankyou.js" defer></script>
 </head>
 <body>
-  
+  <div class="dialogSignin">
+    <div class="colorBar"></div>
+    <img src="/static/images/cross.png" class="cross">
+    <div class="signinBox">
+      <div class="signinHead">
+        <div class="signinHeadText">登入會員帳號</div>
+      </div>
+      <form action="/api/user/auth" method="put" class="signinForm">
+        <div class="emailBox">
+          <input type="text" name="email" class="emailSignin" placeholder="輸入電子信箱">
+        </div>
+        <div class="passwordBox">
+          <input type="password" name="password" class="passwordSignin" placeholder="輸入密碼">
+        </div>
+        <div class="submitBox">
+          <input type="submit" value="登入帳戶" class="submitSignin">
+        </div>
+      </form>
+      <div class="signinResultFailed">
+        <div class="signinResultFailedText">電子信箱或密碼錯誤</div>
+      </div>
+      <div class="toSignup">
+        <div class="toSignupText">還沒有帳戶？點此</div>
+        <dic class="toSignupBtn">註冊</dic>
+      </div>
+    </div>
+  </div>
+  <div class="dialogSignup">
+    <div class="colorBar"></div>
+    <img src="/static/images/cross.png" class="cross">
+    <div class="signupBox">
+      <div class="signupHead">
+        <div class="signupHeadText">註冊會員帳號</div>
+      </div>
+      <form action="/api/user" method="post" class="signupForm">
+        <div class="nameBox">
+          <input type="text" name="name" class="nameSignup" placeholder="輸入姓名">
+        </div>
+        <div class="emailBox">
+          <input type="text" name="email" class="emailSignup" placeholder="輸入電子信箱">
+        </div>
+        <div class="passwordBox">
+          <input type="password" name="password" class="passwordSignup" placeholder="輸入密碼">
+        </div>
+        <div class="submitBox">
+          <input type="submit" value="註冊新帳戶" class="submitSignup">
+        </div>
+      </form>
+      <div class="signupResultOk">
+        <div class="signupResultOkText">註冊成功，請登入系統</div>
+      </div>
+      <div class="signupResultFailed">
+        <div class="signupResultFailedText">該電子信箱已經註冊帳戶</div>
+      </div>
+      <div class="toSignin">
+        <div class="toSigninText">已經有帳戶了？點此</div>
+        <dic class="toSigninBtn">登入</dic>
+      </div>
+    </div>
+  </div>
+  <div class="navigation">
+    <div class="navigationDiv">
+      <div class="navigationText">台北一日遊</div>
+      <div class="navigationContainer">
+        <div class="navigationButtonLeft">
+          <span class="navigationButtonLeftText">預定行程</span>
+        </div>
+        <div class="navigationButtonRight">
+          <span class="navigationButtonRightText">登入/註冊</span>
+        </div>
+        <div class="navigationButtonRightSignout">
+          <span class="navigationButtonRightSignoutText">登出系統</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <main>
+    <div class="titleBox">
+      <div class="showResult"></div>
+      <div class="showOrderNumber">您的訂單編號如下</div>
+      <div class="orderNumberBox">20240703000019000004</div>
+      <div class="hint">點擊編號查看訂單資訊，任何問題歡迎來訊詢問</div>
+      <div class="connection">客服信箱：Taipei_Day_trip@gmail.com</div>
+    </div>
+    <div class="orderInfoBox">
+      <img src="/static/images/cross.png" class="crossOrder">
+      <div class="picture"></div>
+      <div class="info">
+        <div class="infoTitle">
+          <div class="infoTitleText"></div>
+        </div>
+        <div class="infoDate">
+          <div class="infoDateTitle">日期：</div>
+          <div class="infoDateText"></div>
+        </div>
+        <div class="infoTime">
+          <div class="infoTimeTitle">時間：</div>
+          <div class="infoTimeText"></div>
+        </div>
+        <div class="infoPrice">
+          <div class="infoPriceTitle">費用：</div>
+          <div class="infoPriceText"></div>
+        </div>
+        <div class="infoAddress">
+          <div class="infoAddressTitle">地點：</div>
+          <div class="infoAddressText"></div>
+        </div>
+      </div>
+      <div class="separator"></div>
+      <div class="contact">
+        <div class="name">
+          <div class="nameTitle">聯絡姓名：</div>
+          <div class="nameText"></div>
+        </div>
+        <div class="email">
+          <div class="emailTitle">聯絡信箱：</div>
+          <div class="emailText"></div>
+        </div>
+        <div class="phone">
+          <div class="phoneTitle">手機號碼：</div>
+          <div class="phoneText"></div>
+        </div>
+      </div>
+    </div>
+  </main>
+  <footer>
+    <div class="footerBox">
+      <div class="footerDiv">
+        <div class="footerText">COPYRIGHT © 2021 台北一日遊</div>
+      </div>
+    </div>
+  </footer>
+  <div class="overlay"></div>
 </body>
 </html>

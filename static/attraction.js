@@ -182,10 +182,10 @@ async function updatePage(userStatus){
         console.log(error);
     }
 }
-
+let userStatus;
 // 載入頁面時確認使用者狀態
 document.addEventListener("DOMContentLoaded", async function(){
-    const userStatus = await fetchUserData();
+    userStatus = await fetchUserData();
     updatePage(userStatus);
 })
 
@@ -214,11 +214,16 @@ function bookingTrip(){
 }
 
 function createBooking(jsonObject){
+    const token = localStorage.getItem("token")
+    if (!token){
+        showSignIn();
+        return;
+    }
     fetch("/api/booking", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
-            "Authorization": `Bearer ${localStorage.getItem("token")}`
+            "Authorization": `Bearer ${token}`
         },
         body: JSON.stringify(jsonObject)
     }).then(function(response){

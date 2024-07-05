@@ -4,9 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>台北一日遊</title>
-  <link rel="stylesheet" type="text/css" href="./static/index.css"/>
-  <script src="./static/index.js" defer></script>
-  <script src="./static/navigation.js" defer></script>
+  <link rel="stylesheet" type="text/css" href="/static/index.css"/>
+  <script src="/static/navigation.js" defer></script>
+  <script src="/static/index.js" defer></script>
 </head>
 <body>
   <div class="dialogSignin">
@@ -86,7 +86,6 @@
     </div>
   </div>
   <div class="heroSection">
-    <div class="welcome"></div>
     <div class="slogan">
       <div class="sloganDiv">
         <div class="sloganText">
@@ -94,15 +93,13 @@
           <div class="sloganTextMinor">探索每個角落，體驗城市的深度旅遊行程</div>
         </div>
         <div class="search">
-          <div class="searchBarOutside">
-            <div class="searchBarInside">
-              <div class="searchInput">
-                <input type="text" placeholder="輸入景點名稱查詢">
-              </div>
-              <div class="searchBtn">
-                <div class="searchIcon">
-                  <img class="searchImg" src="./static/images/search.png">
-                </div>
+          <div class="searchBox">
+            <div class="searchInputBox">
+              <input type="text" class="searchInput" placeholder="輸入景點名稱查詢">
+            </div>
+            <div class="searchBtn">
+              <div class="searchIcon">
+                <img class="searchImg" src="./static/images/search.png">
               </div>
             </div>
           </div>

@@ -222,91 +222,86 @@ body{
     cursor:pointer;
 }
 .heroSection{
-    position:relative;
     display:flex;
     justify-content:center;
     align-items:center;
     margin:0 auto;
     width:100%;
     height:320px;
-}
-.welcome{
-    width:100%;
-    height:320px;
     background-image:url(images/image.png);
     background-size:cover;
 }
 .slogan{
-    position:absolute;
     flex:none;
     display:flex;
-    justify-content:left;
+    justify-content:center;
     align-items:center;
+    box-sizing:border-box;
     width:1200px;
-    top:75.5px;
-    bottom:75.5px;
-    height:149px;
+    height:169px;
     padding:10px;
-    gap:10px;
 }
 .sloganDiv{
     flex:none;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    box-sizing:border-box;
+    width:100%;
     height:149px;
 }
 .sloganText{
+    flex:none;
+    box-sizing:border-box;
+    width:100%;
     height:78px;
 }
 .sloganTextMajor{
+    width:100%;
     height:41px;
     font-family:"Noto Sans TC", sans-serif;
     font-weight:700;
     font-size:28px;
-    line-height:24px;
     color:#F8F8F8;
     text-shadow:0px 0px 30px 0px #AABBCC;
 }
 .sloganTextMinor{
+    width:100%;
     height:22px;
     margin-top:15px;
     font-family:"Noto Sans TC", sans-serif;
     font-weight:700;
     font-size:16px;
-    line-height:13.3px;
     color:#F8F8F8;
 }
 .search{
-    /* width:1180px; */
+    flex:none;
+    box-sizing:border-box;
+    width:100%;
     height:46px;
     margin-top:25px;
 }
-.searchBarOutside{
-    width:460px;
-    height:46px;
-}
-.searchBarInside{
+.searchBox{
     display:flex;
     width:460px;
     height:46px;
 }
-.searchInput{
-    flex:none;
-    width:400px;
+.searchInputBox{
+    flex:1;
+    box-sizing:border-box;
     height:46px;
+    padding:15px;
     box-shadow:0px 0px 20px 0px #AABBCC;
     background-color:#FFFFFF;
     border-radius:5px 0px 0px 5px;
 }
-input{
-    width:370px;
-    height:16px;
-    margin-top:15px;
-    margin-bottom:15px;
-    margin-left:15px;
-    margin-right:15px;
+.searchInput{
+    width:100%;
+    height:100%;
     font-family:"Noto Sans TC", sans-serif;
     font-weight:700;
     font-size:16px;
-    line-height:13.3px;
     color:#757575;
 }
 input:focus{
@@ -333,23 +328,25 @@ input:focus{
     height:30px;
 }
 main{
+    box-sizing:border-box;
     width:100%;
-    /* height:886px; */
     padding:40px 0px 40px 0px;
 }
 .listBar{
     display:flex;
     justify-content:center;
     align-items:center;
+    box-sizing:border-box;
+    width:1200px;
+    height:70px;
     margin:auto;
-    /*  width:1200px; */
-    height:50px;
-    padding:0px 0px 20px 0px;
+    padding-bottom:20px;
 }
 .leftContainer{
     flex:none;
-    width:32px;
-    height:32px;
+    box-sizing:border-box;
+    width:47px;
+    height:50px;
     padding:9px 0px 9px 15px;
 }
 .arrowLeft{
@@ -361,25 +358,26 @@ main{
     cursor:pointer;
 }
 .container{
-    flex:none;
-    width:1086px;
-    height:24px;
+    flex:1;
+    box-sizing:border-box;
+    width:calc(100% - 94px);
+    height:50px;
     padding:13px 10px 13px 10px;
 }
 .listItemContainer{
     display:flex;
-    /* width:1086px; */
-    height:24px;
+    width:100%;
+    height:100%;
     overflow:hidden;
 }
 .listItem{
     flex:none;
-    height:14px;
+    box-sizing:border-box;
+    height:100%;
     padding:5px 15px 5px 15px;
-    gap:4px;
 }
 .listItemText{
-    height:14px;
+    height:100%;
     text-align:center;
     font-family:"Noto Sans TC", sans-serif;
     font-weight:500;
@@ -390,8 +388,9 @@ main{
 }
 .rightContainer{
     flex:none;
-    width:32px;
-    height:32px;
+    box-sizing:border-box;
+    width:47px;
+    height:50px;
     padding:9px 15px 9px 0px;
 }
 .arrowRight{
@@ -406,28 +405,21 @@ main{
     display:flex;
     justify-content:center;
     align-items:center;
+    box-sizing:border-box;
     margin:auto;
-    /* width:1200px; */
-    /* height:816px; */
+    width:1200px;
+    padding:15px;
 }
 .attractionsGroup{
     flex:none;
     display:grid;
     grid-template-columns:1fr 1fr 1fr 1fr;
-    grid-template-rows:242px 242px 242px;
-    column-gap:30px;
-    row-gap:30px;
-    /* width:1170px; */
-    /* height:786px; */
-    margin-top:15px;
-    margin-bottom:15px;
-    margin-left:15px;
-    margin-right:15px;
+    grid-template-rows:242px;
+    gap:30px;
 }
 .attraction{
-    /* width:268px;
-    height:240px; */
-    border-radius:5px 5px 5px 5px;
+    box-sizing:border-box;
+    border-radius:5px;
     border:1px solid #E8E8E8;
     background-color:#FFFFFF;
     cursor:pointer;
@@ -440,6 +432,7 @@ main{
 .attractionImg{
     position:relative;
     background-size:cover;
+    background-position:center;
     display:flex;
     justify-content:center;
     align-items:center;
@@ -562,83 +555,47 @@ footer{
     opacity:25%;
 }
 
-@media(max-width:1200px){
+@media(max-width:1220px){
     .navigationDiv{
-        width:600px;
+        width:100%;
     }
     .navigationText{
         margin-left:10px;
     }
-    .slogan{
-        width:600px;
-    }
-    .search{
-        width:285px;
-    }
-    .searchBarOutside{
-        width:285px;
-    }
-    .searchBarInside{
-        width:285px;
-    }
-    .searchInput{
-        width:225px;
-    }
-    input{
-        width:195px;
-    }
-    .listBar{
-        width:600px;
-    }
-    .container{
-        width:410px;
-    }
-    .listItemContainer{
-        width:410px;
-    }
-    .attractions{
-        margin-top:15px;
-        width:80%;
+    .slogan, .listBar, .attractions{
+        width:90%;
     }
     .attractionsGroup{
-        flex:none;
-        display:grid;
         grid-template-columns:1fr 1fr;
-        grid-template-rows:242px 242px;
-        column-gap:30px;
-        row-gap:30px;
-        margin:auto;
+        grid-template-rows:242px;
+        width:100%;
+    }
+    .attractionImg, .detailsName, .detailsMrtCatInfo{
+        width:100%;
+    }
+    .detailsMrtCat{
+        box-sizing:border-box;
+        padding:10px;
+        width:100%;
+        height:44px;
+    }
+    .detailsMrtText, .detailsCatText{
+        width:50%;
     }
 }
-
-@media(max-width:600px){
-    .navigationDiv{
-        width:360px;
+@media(max-width:700px){
+    .slogan, .listBar{
+        width:94%;
     }
-    .slogan{
-        width:360px;
-    }
-    .listBar{
-        width:360px;
-    }
-    .container{
-        flex:none;
-        width:246px;
-        height:24px;
-        padding:13px 10px 13px 10px;
-    }
-    .listItemContainer{
-        display:flex;
-        width:246px;
-        height:24px;
+    .searchBox{
+        width:285px;
     }
     .attractionsGroup{
-        flex:none;
-        display:grid;
         grid-template-columns:1fr;
-        grid-template-rows:280px 280px;
+        grid-template-rows:280px;
         row-gap:15px;
-        /* width:352px; */
-        /* height:605px; */
+    }
+    .attractionImg{
+        height:234px;
     }
 }

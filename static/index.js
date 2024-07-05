@@ -4,10 +4,10 @@ const arrowRight = document.querySelector(".arrowRight");
 const listItemContainer = document.querySelector(".listItemContainer");
 
 arrowLeft.addEventListener("click", function(){
-listItemContainer.scrollBy({left: -500, behavior: "smooth"});
+listItemContainer.scrollBy({left: -200, behavior: "smooth"});
 })
 arrowRight.addEventListener("click", function(){
-listItemContainer.scrollBy({left: 500, behavior: "smooth"});
+listItemContainer.scrollBy({left: 200, behavior: "smooth"});
 })
 arrowLeft.addEventListener("mouseover", function(){
 arrowLeft.style.opacity = "100%";
@@ -43,8 +43,8 @@ for (let i = 0 ; i < mrts.length ; i++){
     // 點擊捷運站名，送入搜尋框
     listItemText.addEventListener("click", function(){
         listItemText.style.color = "#000000";
-        const input = document.querySelector("input");
-        input.value = mrts[i];
+        const searchInput = document.querySelector(".searchInput");
+        searchInput.value = mrts[i];
         const searchBtn = document.querySelector(".searchBtn");
         searchBtn.click();
     })
@@ -55,7 +55,6 @@ for (let i = 0 ; i < mrts.length ; i++){
         listItemText.style.color = "#666666";
     })
 }
-
 })
 
 
@@ -166,7 +165,6 @@ const callback = (entries, observer) => {
                     loadData();
                 })
             }
-            
         }
     });
 }
@@ -178,7 +176,7 @@ observer.observe(target);
 
 // Keyword Search Function
 document.querySelector(".searchBtn").addEventListener("click", function(){
-    keyword = document.querySelector("input").value;
+    keyword = document.querySelector(".searchInput").value;
     if (keyword.trim() === ""){
         return;
     }
@@ -211,7 +209,7 @@ document.querySelector(".searchBtn").addEventListener("click", function(){
 })
 
 // 設定按下 Enter 鍵時，觸發按下搜尋鍵的效果
-document.querySelector("input").addEventListener("keypress", function(event){
+document.querySelector(".searchInput").addEventListener("keypress", function(event){
     if (event.key === "Enter"){
         document.querySelector(".searchBtn").click();
     }
@@ -254,8 +252,9 @@ async function updatePage(userStatus){
     }
 }
 
+let userStatus;
 // 載入頁面時確認使用者狀態
 document.addEventListener("DOMContentLoaded", async function(){
-    const userStatus = await fetchUserData();
+    userStatus = await fetchUserData();
     updatePage(userStatus);
 })
