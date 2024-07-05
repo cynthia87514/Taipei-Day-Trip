@@ -139,8 +139,7 @@ document.querySelector(".navigationButtonRightSignoutText").addEventListener("cl
 // Function Part ///////////////////////////////////////////////////////////////////////
 async function bookingButton(){
     try{
-        const token = localStorage.getItem("token");
-        if (token){
+        if (userStatus.data !== null){
             window.location.href = "/booking";
         }else{
             showSignIn();

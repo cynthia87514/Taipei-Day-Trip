@@ -182,10 +182,10 @@ async function updatePage(userStatus){
         console.log(error);
     }
 }
-
+let userStatus;
 // 載入頁面時確認使用者狀態
 document.addEventListener("DOMContentLoaded", async function(){
-    const userStatus = await fetchUserData();
+    userStatus = await fetchUserData();
     updatePage(userStatus);
 })
 

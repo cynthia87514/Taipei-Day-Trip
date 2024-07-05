@@ -59,10 +59,11 @@ let attractionImage = "";
 let bookingDate = "";
 let bookingTime = "";
 let bookingPrice;
+let userStatus;
 
 document.addEventListener("DOMContentLoaded", async function(){
     try{
-        const userStatus = await fetchUserData();
+        userStatus = await fetchUserData();
         if (userStatus.data === null){
             window.location.href = "/";
             return;

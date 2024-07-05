@@ -44,10 +44,11 @@ const orderNumberBox = document.querySelector(".orderNumberBox");
 const orderInfoBox = document.querySelector(".orderInfoBox");
 const crossOrder = orderInfoBox.querySelector(".crossOrder");
 
+let userStatus;
 // 載入頁面時確認使用者狀態
 document.addEventListener("DOMContentLoaded", async function(){
     try{
-        const userStatus = await fetchUserData();
+        userStatus = await fetchUserData();
         if (userStatus.data === null){
             window.location.href = "/";
             return;
