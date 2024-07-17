@@ -12,7 +12,7 @@ cnxpool = mysql.connector.pooling.MySQLConnectionPool(
     port = secrets["MYSQL_PORT"],
     user = secrets["MYSQL_USER"],
     password = secrets["MYSQL_PASSWORD"],
-    database = secrets["MYSQL_DATABASE"]
+    database = secrets["MYSQL_DATABASE"],
 )
 
 def get_db_connection():
