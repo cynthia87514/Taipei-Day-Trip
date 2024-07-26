@@ -9,11 +9,10 @@ with open("./data/taipei-attractions.json", "r", encoding="utf-8") as f:
     results = result["results"]
 
 con = mysql.connector.connect(
-    host = secrets["MYSQL_HOST"],
-    port = secrets["MYSQL_PORT"],
-    user = secrets["MYSQL_USER"],
-    password = secrets["MYSQL_PASSWORD"],
-    database = secrets["MYSQL_DATABASE"]
+    host="db",
+    user=secrets["MYSQL_USER"],
+    password=secrets["MYSQL_PASSWORD"],
+    database=secrets["MYSQL_DATABASE"]
 )
 
 try:

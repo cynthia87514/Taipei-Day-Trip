@@ -1,0 +1,32 @@
+services:
+  web:
+    build: .
+    container_name: Taipei-Day-Trip
+    volumes:
+      - .:/app
+    ports:
+      - "8080:8000"
+    depends_on:
+      - db
+    environment:
+      - MYSQL_HOST=db
+      - MYSQL_PORT=3306
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_DATABASE=taipei-day-trip
+
+  db:
+    image: "mysql:8.0"
+    container_name: db
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_DATABASE=taipei-day-trip
+    ports:
+      - "3307:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+
+volumes:
+  db_data:
