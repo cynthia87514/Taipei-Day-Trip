@@ -1,4 +1,4 @@
-USE `taipei-day-trip`;
+USE `taipei_day_trip`;
 
 CREATE TABLE `attractions`(
     id BIGINT PRIMARY KEY AUTO_INCREMENT,
