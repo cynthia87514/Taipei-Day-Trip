@@ -8,6 +8,8 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 RUN apt-get update && apt-get install -y netcat-openbsd default-mysql-client
 
+COPY init.sql /docker-entrypoint-initdb.d/init.sql
+
 COPY entrypoint.sh /app/entrypoint.sh
 RUN chmod +x /app/entrypoint.sh
 
