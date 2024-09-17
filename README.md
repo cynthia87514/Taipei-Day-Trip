@@ -1,17 +1,71 @@
-# [台北一日遊](http://35.84.162.30:8000/)
-### 這是一個旅遊電商網站，搜尋並預定有興趣的景點，輕鬆規劃台北一日遊
-### 主要功能介紹
-- 搜尋台北各景點資訊，包含特色簡介、交通方式等
-  - 直接瀏覽首頁，滑鼠向下滾動到底部，自動產生新景點
-  - 輸入關鍵字、點擊捷運站名，找尋特定景點
-- 帳號管理，供使用者註冊、登入及登出
-- 登入後可預定行程並放入購物車
-- 透過 TapPay 金流服務完成付款，取得訂單編號
-### 系統架構
-- 透過 Git Flow 方式開發，實踐版本控制
-- 主程式採用前後端分離
-  - 前端：HTML、CSS、JavaScript
-  - 後端：Python 搭配 FastAPI 框架，並使用 MVC 模式撰寫
-- 資料庫使用 MySQL，儲存網站相關資料
-- 專案部署於 AWS EC2
-### 資料庫架構
+# [台北一日遊](https://hsupei.site/)
+
+### A tourism e-commerce webite which users can explore and book favorite attractions with ease.
+
+### Table of contents
+
+- [Main Features](#main-features)
+- [Demo](#demo)
+- [Server Architecture](#server-architecture)
+- [Database Schema](#database-schema)
+- [Technique](#technique)
+- [Contact](#contact)
+
+---
+
+### Main Features
+
+- Member system
+- Search for information on attractions in Taipei
+- Book tours and add them to cart
+- Complete payment by using TapPay
+
+---
+
+### Demo
+
+- Member system: Login by creating an account.
+![Login Demo](./static/gif/login.gif)
+
+- Search for information on attractions in Taipei:
+  - Scroll down to the bottom of the homepage to automatically load more attractions.
+  - Enter keywords or click on MRT station names to find specific attractions.
+![Search Demo](./static/gif/search.gif)
+
+- Book tours and add them to cart: Users can only add one tour to cart at a time.
+![Book Demo](./static/gif/book.gif)
+
+- Complete payment by using TapPay: Users will receive order number after paying successfully.
+![Pay Demo](./static/gif/pay.gif)
+
+---
+
+### Server Architecture
+![architecture](./static/images/architecture.png)
+
+---
+
+### Database Schema
+![database](./static/images/database-ERD.png)
+
+---
+
+### Technique
+
+- Front-End
+    - HTML, CSS, JavaScript
+- Back-End
+    - Web Framework : Python FastAPI
+    - Database : MySQL
+    - Container : Docker
+    - Reverse Proxy : Nginx
+    - Cloud : AWS RDS, Route 53
+    - Third-Party : TapPay SDK
+    - Design Pattern : MVC
+
+---
+
+### Contact
+<img src="/static/images/account.png" width="15"/> **許珮萱 Pei Hsuan Hsu**  
+<img src="/static/images/email.png" width="15"/> Email: [hsupei0514@gmail.com](mailto:hsupei0514@gmail.com)  
+<img src="/static/images/linkedin.png" width="15"/> LinkedIn: [Pei Hsuan Hsu](https://www.linkedin.com/in/pei-hsuan-hsu-0841a52bb/)
