@@ -27,9 +27,7 @@
 - Member system: Login by creating an account.
 ![Login Demo](./static/gif/login.gif)
 
-- Search for information on attractions in Taipei:
-  - Scroll down to the bottom of the homepage to automatically load more attractions.
-  - Enter keywords or click on MRT station names to find specific attractions.
+- Search for information on attractions in Taipei: Scroll down to the bottom of the homepage to automatically load more attractions, and enter keywords or click on MRT station names to find specific attractions.
 ![Search Demo](./static/gif/search.gif)
 
 - Book tours and add them to cart: Users can only add one tour to cart at a time.
