@@ -1,32 +1,26 @@
 services:
   web:
     build: .
-    container_name: Taipei-Day-Trip
+    container_name: web
     volumes:
       - .:/app
     ports:
       - "8080:8000"
-    depends_on:
-      - db
-    environment:
-      - MYSQL_HOST=db
-      - MYSQL_PORT=3306
-      - MYSQL_USER=root
-      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
-      - MYSQL_DATABASE=taipei-day-trip
-
-  db:
-    image: "mysql:8.0"
-    container_name: db
-    restart: always
-    environment:
-      - MYSQL_ROOT_PASSWORD=${MYSQL_PASSWORD}
-      - MYSQL_DATABASE=taipei-day-trip
+  
+  nginx:
+    image: nginx:latest
+    container_name: nginx
     ports:
-      - "3307:3306"
+      - "80:80"
+      - "443:443"
+    depends_on:
+      - web
     volumes:
-      - db_data:/var/lib/mysql
-      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+      - /etc/letsencrypt:/etc/letsencrypt
+      - ./static:/usr/share/nginx/html/static
+      - /etc/ssl/certs/dhparam.pem:/etc/ssl/certs/dhparam.pem
+      - .:/app
 
 volumes:
   db_data:
