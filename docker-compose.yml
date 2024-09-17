@@ -6,6 +6,8 @@ services:
       - .:/app
     ports:
       - "8080:8000"
+    env_file:
+      - .env
   
   nginx:
     image: nginx:latest
@@ -21,6 +23,3 @@ services:
       - ./static:/usr/share/nginx/html/static
       - /etc/ssl/certs/dhparam.pem:/etc/ssl/certs/dhparam.pem
       - .:/app
-
-volumes:
-  db_data:
