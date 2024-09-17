@@ -5,14 +5,13 @@ from dotenv import dotenv_values
 secrets = dotenv_values(".env")
 
 cnxpool = mysql.connector.pooling.MySQLConnectionPool(
-    pool_name = "mypool",
-    pool_size = 32,
-    pool_reset_session = True,
-	host = secrets["MYSQL_HOST"],
-    port = secrets["MYSQL_PORT"],
-    user = secrets["MYSQL_USER"],
-    password = secrets["MYSQL_PASSWORD"],
-    database = secrets["MYSQL_DATABASE"]
+    pool_name="mypool",
+    pool_size=32,
+    pool_reset_session=True,
+	host=secrets["MYSQL_HOST"],
+    user=secrets["MYSQL_USER"],
+    password=secrets["MYSQL_PASSWORD"],
+    database=secrets["MYSQL_DATABASE"],
 )
 
 def get_db_connection():

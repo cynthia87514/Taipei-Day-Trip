@@ -1,0 +1,8 @@
+fastapi
+uvicorn
+mysql-connector-python
+python-dotenv
+pydantic
+PyJWT
+tappay
+email_validator

@@ -1,4 +1,7 @@
 import json, mysql.connector, re
+from dotenv import dotenv_values
+
+secrets = dotenv_values(".env")
 
 with open("./data/taipei-attractions.json", "r", encoding="utf-8") as f:
     data = json.load(f)
@@ -6,11 +9,10 @@ with open("./data/taipei-attractions.json", "r", encoding="utf-8") as f:
     results = result["results"]
 
 con = mysql.connector.connect(
-    host="localhost",
-    port="3306",
-    user="root",
-    password="19980514",
-    database="taipei-day-trip"
+    host=secrets["MYSQL_HOST"],
+    user=secrets["MYSQL_USER"],
+    password=secrets["MYSQL_PASSWORD"],
+    database=secrets["MYSQL_DATABASE"]
 )
 
 try:

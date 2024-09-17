@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>預定行程 - 台北一日遊</title>
+  <link rel="icon" href="/static/images/favicon.ico" type="image/x-icon">
   <link rel="stylesheet" type="text/css" href="/static/css/booking.css"/>
   <script src="/static/js/navigation.js" defer></script>
   <script src="https://js.tappaysdk.com/sdk/tpdirect/v5.14.0" defer></script>
@@ -19,10 +20,10 @@
       </div>
       <form action="/api/user/auth" method="put" class="signinForm">
         <div class="emailBox">
-          <input type="text" name="email" class="emailSignin" placeholder="輸入電子信箱">
+          <input type="text" name="email" class="emailSignin" placeholder="輸入電子信箱" value="test@test.com">
         </div>
         <div class="passwordBox">
-          <input type="password" name="password" class="passwordSignin" placeholder="輸入密碼">
+          <input type="password" name="password" class="passwordSignin" placeholder="輸入密碼" value="test">
         </div>
         <div class="submitBox">
           <input type="submit" value="登入帳戶" class="submitSignin">
